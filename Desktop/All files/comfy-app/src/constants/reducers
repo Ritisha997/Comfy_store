@@ -1,0 +1,24 @@
+import React from "react";
+
+const reducer = (state,action) =>{
+ console.log(action.payload)
+    if(action.type === 'FETCH_PRODUCT_ITEM'){
+       return ({...state, isLoading: true})
+    }
+   
+    if(action.type === 'GET_PRODUCTS'){
+        
+          return {
+            ...state,
+            products: action.payload,
+            featured_products: products,
+          }
+    }
+    if (action.type === 'GET_PRODUCTS_ERROR') {
+        return { ...state, products_loading: false, products_error: true }
+      }
+     
+    
+}
+
+export default reducer
