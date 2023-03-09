@@ -1,36 +1,56 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom';
+import { useProductsContext } from '../context/Product_context'
+import AddToCart from './AddToCart';
+import Loading from './Loading';
 import ProductImage from './ProductImage';
 
 const SingleProduct = () => {
+  const {fetchSingle, onTheCart, product: product, loading: isLoading} = useProductsContext();
+
+ 
 const url = 'https://course-api.com/react-store-single-product?id=';
 const [single, setSingle] = useState({});
-const [loading, setLoading] = useState(false)
+const [loading, setLoading] = useState(true);
+// const [amount, setAmount] = useState(1);
 const {id} = useParams();
 
-console.log(id)
 // setLoading(true)
-const fetchSingle = async (url) =>{
-  // setLoading(false)
- const resp = await fetch(url)
- const data = await resp.json()
-  console.log(data)
-  setSingle(data)
-}
+
+// const setDecrease = () =>{
+//   amount > 1 ? setAmount(amount - 1) : setAmount(1)
+// }
+
+// const setIncrease = () =>{
+//   amount < single.stock ? setAmount(amount + 1) : setAmount(single.stock)
+// }
 
 
 useEffect(()=>{
   fetchSingle(`${url}${id}`);
+ setLoading(false)
 },[id])
-console.log(single.images)
+
+if (loading) {
+  return <Loading/>;
+}
+
+
 const {name, images} = single
-console.log(images)
+
   return (
 
-    <div>
-      <ProductImage images={images}/>
-      <string>{name}</string>
+    <div className='single-product' key={product.id}>
+      <ProductImage images={product.images}/>
+      <div className='single-product__sub'>
+
+      {/* <string>{product.name}</string> */}
+      
+      <div> 
+      {product.stock > 0 && <AddToCart product={product}/>}
+         </div>
+         </div>
     </div>
   )
 }
